@@ -8,9 +8,9 @@ namespace AppControleFinanceiroCurso.Repositories
     {
         private readonly LiteDatabase _database;
         private readonly string _collectionName = "transactions";
-        public TransactionRepositoy()
+        public TransactionRepositoy(LiteDatabase database)
         {
-            _database = new LiteDatabase("Filename=C:/users/AppData/controle_financeiro_db.db;Connection=Shared");
+            _database = database;
         }
 
         public List<TransactionModel> GetAll()

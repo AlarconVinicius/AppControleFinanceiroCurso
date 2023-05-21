@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using AppControleFinanceiroCurso.IoC;
+using Microsoft.Extensions.Logging;
 
 namespace AppControleFinanceiroCurso;
 
@@ -13,7 +14,8 @@ public static class MauiProgram
 			{
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
-			});
+			})
+			.RegisterDatabaseAndRepositories();
 
 #if DEBUG
 		builder.Logging.AddDebug();
