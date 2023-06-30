@@ -8,5 +8,6 @@
             Text="Transaction List"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
+        <Button Text="+" Clicked="OnButtonClicked_To_TransactionAdd" />
     </VerticalStackLayout>
 </ContentPage>
