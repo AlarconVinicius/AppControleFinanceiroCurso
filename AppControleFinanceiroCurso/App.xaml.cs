@@ -4,10 +4,11 @@ namespace AppControleFinanceiroCurso;
 
 public partial class App : Application
 {
-	public App()
+	public App(TransactionList listPage)
 	{
 		InitializeComponent();
+        App.Current!.UserAppTheme = AppTheme.Light;
 
-		MainPage = new TransactionList();
+        MainPage = new NavigationPage(listPage);
 	}
 }

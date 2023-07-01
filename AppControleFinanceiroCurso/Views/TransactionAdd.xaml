@@ -3,10 +3,43 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="AppControleFinanceiroCurso.Views.TransactionAdd"
              Title="TransactionAdd">
-    <VerticalStackLayout>
-        <Label 
-            Text="Transaction Add "
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+    <VerticalStackLayout Spacing="10">
+        <Border 
+            BackgroundColor="Black" 
+            Margin="15" 
+            Padding="15" 
+            Stroke="Transparent" 
+            StrokeShape="RoundRectangle 30">
+            <Grid RowDefinitions="Auto" ColumnDefinitions="*, 30">
+                <Label 
+                    Text="Novo"
+                    TextColor="White"
+                    HorizontalOptions="Center"
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    VerticalOptions="Center"
+                />
+                <Image
+                    HorizontalOptions="Center" 
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Source="close.png"
+                    WidthRequest="17">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped_ToClose"/>
+                    </Image.GestureRecognizers>
+
+                </Image>
+            </Grid>
+        </Border>
+        <Label x:Name="LabelError" Margin="30" TextColor="Red" IsVisible="False" />
+        <Grid ColumnDefinitions="*, *" Margin="30">
+            <RadioButton x:Name="RadioIncome" IsChecked="True" Content="Receita" />
+            <RadioButton x:Name="RadioExpense" Grid.Column="1" HorizontalOptions="End" Content="Despesa"/>
+        </Grid>
+        <Entry x:Name="EntryName" Placeholder="Nome" Margin="15, 0"/>
+        <DatePicker x:Name="DatePickerDate"  Margin="15, 0"/>
+        <Entry x:Name="EntryValue" Placeholder="Valor" Margin="15, 0"/>
+        <Button Clicked="OnButtonClicked_Save" Text="Salvar" Margin="15, 0" HorizontalOptions="Center"/>
     </VerticalStackLayout>
 </ContentPage>

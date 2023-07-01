@@ -10,6 +10,6 @@ namespace AppControleFinanceiroCurso.Models
         public TransactionType Type { get; set; }
         public String Name { get; set; }
         public DateTimeOffset Date { get; set; }
-        public decimal Value { get; set; }
+        public double Value { get; set; }
     }
 }
