@@ -9,6 +9,7 @@ namespace AppControleFinanceiroCurso.Views;
 public partial class TransactionAdd : ContentPage
 {
     private ITransactionRepositoy _repository;
+    private int qtdRepete;
     public TransactionAdd(ITransactionRepositoy repository)
     {
         InitializeComponent();
@@ -40,7 +41,10 @@ public partial class TransactionAdd : ContentPage
             Type = RadioIncome.IsChecked ? TransactionType.Income : TransactionType.Expense,
             Name = EntryName.Text,
             Date = DatePickerDate.Date,
-            Value = double.Parse(EntryValue.Text)
+            Value = double.Parse(EntryValue.Text),
+            Paid = CheckBoxPaid.IsChecked ? true : false,
+            Repete = CheckBoxRepete.IsChecked ? true : false,
+            QtdRepete = this.qtdRepete
         };
         _repository.Add(transaction);
     }
@@ -50,6 +54,7 @@ public partial class TransactionAdd : ContentPage
         bool valid = true;
         StringBuilder stringBuilder = new StringBuilder();
         double result;
+        int repeteResult;
         if (string.IsNullOrEmpty(EntryName.Text) || string.IsNullOrWhiteSpace(EntryName.Text))
         {
             stringBuilder.AppendLine("O campo 'Nome' deve ser preenchido!");
@@ -64,6 +69,32 @@ public partial class TransactionAdd : ContentPage
         {
             stringBuilder.AppendLine("O campo 'Valor' é inválido!");
             valid = false;
+        }
+        if(CheckBoxRepete.IsChecked)
+        {
+            if (string.IsNullOrEmpty(EntryQtdRepete.Text) || string.IsNullOrWhiteSpace(EntryQtdRepete.Text))
+            {
+                stringBuilder.AppendLine("O campo 'Repetir Mensalmente' deve ser preenchido!");
+                valid = false;
+            }
+            if (!string.IsNullOrEmpty(EntryQtdRepete.Text) && !int.TryParse(EntryQtdRepete.Text, out repeteResult))
+            {
+                stringBuilder.AppendLine("O campo 'Repetir Mensalmente' é inválido!");
+                valid = false;
+            }
+            else if (int.TryParse(EntryQtdRepete.Text, out repeteResult) && repeteResult <= 0)
+            {
+                stringBuilder.AppendLine("O campo 'Repetir Mensalmente' deve ser maior que 0!");
+                valid = false;
+            }
+            else if (int.TryParse(EntryQtdRepete.Text, out repeteResult))
+            {
+                this.qtdRepete = repeteResult;
+            }
+        }
+        else
+        {
+            this.qtdRepete = 0;
         }
         if(valid == false)
         {
