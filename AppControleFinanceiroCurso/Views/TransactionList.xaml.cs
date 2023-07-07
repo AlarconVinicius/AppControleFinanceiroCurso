@@ -28,10 +28,14 @@ public partial class TransactionList : ContentPage
         double income = items.Where(a => a.Type == Models.Enums.TransactionType.Income).Sum(a => a.Value);
         double expense = items.Where(a => a.Type == Models.Enums.TransactionType.Expense).Sum(a => a.Value);
         double balance = income - expense;
+        double paid = items.Where(a => a.Paid == true).Sum(a => a.Value);
+        double pending = items.Where(a => a.Paid == false).Sum(a => a.Value);
 
         LabelIncome.Text = income.ToString("C");
         LabelExpense.Text = expense.ToString("C");
         LabelBalance.Text = balance.ToString("C");
+        LabelPaid.Text = paid.ToString("C");
+        LabelPending.Text = pending.ToString("C");
     }
 
     private void OnButtonClicked_To_TransactionAdd(object sender, EventArgs args)

@@ -14,12 +14,12 @@ namespace AppControleFinanceiroCurso.Libraries.Converters
 
             if (transaction.Type == TransactionType.Income)
             {
-                return Color.FromArgb("#FF939E5A");
+                return Color.FromArgb("#FF05B76B");
             }
             else
             {
 
-                return Colors.Red;
+                return Color.FromArgb("#FFC82501");
             }
         }
 

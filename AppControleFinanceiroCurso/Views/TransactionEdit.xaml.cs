@@ -26,6 +26,14 @@ public partial class TransactionEdit : ContentPage
         {
             RadioExpense.IsChecked = true;
         }
+        if (transaction.Paid)
+        {
+            CheckBoxPaid.IsChecked = true;
+        }
+        else
+        {
+            CheckBoxPaid.IsChecked = false;
+        }
         EntryName.Text = transaction.Name;
         DatePickerDate.Date = transaction.Date.Date;
         EntryValue.Text = transaction.Value.ToString();
@@ -54,7 +62,8 @@ public partial class TransactionEdit : ContentPage
             Type = RadioIncome.IsChecked ? TransactionType.Income : TransactionType.Expense,
             Name = EntryName.Text,
             Date = DatePickerDate.Date,
-            Value = double.Parse(EntryValue.Text)
+            Value = double.Parse(EntryValue.Text),
+            Paid = CheckBoxPaid.IsChecked ? true : false
         };
         _repository.Update(transaction);
     }

@@ -10,27 +10,22 @@ namespace AppControleFinanceiroCurso.Libraries.Converters
 {
     class TransactionPaymentColorConverter : IValueConverter
     {
+
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotImplementedException();
+            TransactionModel transaction = (TransactionModel)value;
+
+            if (transaction == null) return Colors.Transparent;
+
+            if (transaction.Paid)
+            {
+                return Color.FromArgb("#FF05B76B");
+            }
+            else
+            {
+                return Color.FromArgb("#FFC82501");
+            }
         }
-
-        //public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        //{
-        //    TransactionModel transaction = (TransactionModel)value;
-
-        //    if (transaction == null) return Colors.Transparent;
-
-        //    //if (transaction.Type == TransactionType.Income)
-        //    //{
-        //    //    return Color.FromArgb("#FF939E5A");
-        //    //}
-        //    //else
-        //    //{
-
-        //    //    return Colors.Red;
-        //    //}
-        //}
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {

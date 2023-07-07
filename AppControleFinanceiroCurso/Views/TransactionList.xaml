@@ -13,6 +13,7 @@
             <converters:TransactionNameColorConverter x:Key="TransactionNameColorConverter"/>
             <converters:TransactionValueConverter x:Key="TransactionValueConverter"/>
             <converters:TransactionValueColorConverter x:Key="TransactionValueColorConverter"/>
+            <converters:TransactionPaymentColorConverter x:Key="TransactionPaymentColorConverter"/>
         </ResourceDictionary>
     </ContentPage.Resources>
     <VerticalStackLayout >
@@ -60,7 +61,7 @@
                             </Image>
                         </Frame>
                         <Label Margin="5, 0, 5, 0" Text="Pago" Grid.Row="0" Grid.Column="1" FontSize="14" TextColor="#fff" HorizontalTextAlignment="Start"/>
-                        <Label Margin="5, 0, 5, 0" Text="R$ 1000,00" Grid.Row="1" Grid.Column="1" FontSize="14" TextColor="#fff" HorizontalTextAlignment="Start" LineBreakMode="NoWrap"/>
+                        <Label x:Name="LabelPaid" Margin="5, 0, 5, 0" Grid.Row="1" Grid.Column="1" FontSize="14" TextColor="#fff" HorizontalTextAlignment="Start" LineBreakMode="NoWrap"/>
                     </Grid>
 
                     <Grid  Grid.Column="1" HorizontalOptions="Center">
@@ -90,7 +91,7 @@
                             </Image>
                         </Frame>
                         <Label Margin="5, 0, 5, 0" Text="A pagar" Grid.Row="0" Grid.Column="1" FontSize="14" TextColor="#fff" HorizontalTextAlignment="Start"/>
-                        <Label Margin="5, 0, 5, 0" Text="R$ 1000,00" Grid.Row="1" Grid.Column="1" FontSize="14" TextColor="#fff" HorizontalTextAlignment="Start" LineBreakMode="NoWrap"/>
+                        <Label x:Name="LabelPending" Margin="5, 0, 5, 0" Grid.Row="1" Grid.Column="1" FontSize="14" TextColor="#fff" HorizontalTextAlignment="Start" LineBreakMode="NoWrap"/>
                     </Grid>
                 </Grid>
             </Grid>
@@ -124,7 +125,7 @@
                             </VerticalStackLayout>
 
                             <Label Grid.Column="2" Text="{Binding ., Converter={StaticResource TransactionValueConverter}}" TextColor="{Binding ., Converter={StaticResource TransactionValueColorConverter}}" VerticalOptions="Center"/>
-                            <Ellipse Grid.Column="3" HorizontalOptions="Center" VerticalOptions="Center" WidthRequest="10" HeightRequest="10" Fill="Red"/>
+                            <Ellipse Grid.Column="3" HorizontalOptions="Center" VerticalOptions="Center" WidthRequest="10" HeightRequest="10" Fill="{Binding ., Converter={StaticResource TransactionPaymentColorConverter}}"/>
                         </Grid>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
