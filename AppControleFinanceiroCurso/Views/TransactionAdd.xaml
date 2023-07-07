@@ -3,28 +3,29 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="AppControleFinanceiroCurso.Views.TransactionAdd"
              Title="TransactionAdd">
-    <VerticalStackLayout Spacing="10">
+    <VerticalStackLayout Spacing="10" BackgroundColor="White">
         <Border 
-            BackgroundColor="Black" 
-            Margin="15" 
-            Padding="15" 
-            Stroke="Transparent" 
-            StrokeShape="RoundRectangle 30">
-            <Grid RowDefinitions="Auto" ColumnDefinitions="*, 30">
+            BackgroundColor="Transparent" 
+            Padding="0,10" 
+            Stroke="Transparent">
+            <Grid RowDefinitions="Auto" ColumnDefinitions="50,Auto">
                 <Label 
-                    Text="Novo"
-                    TextColor="White"
+                    Text="Nova Transação"
+                    FontSize="20"
+                    TextColor="Black"
+                    VerticalOptions="Center"
                     HorizontalOptions="Center"
                     Grid.Row="0"
-                    Grid.Column="0"
-                    VerticalOptions="Center"
+                    Grid.Column="1"
                 />
                 <Image
+                    VerticalOptions="Center" 
                     HorizontalOptions="Center" 
                     Grid.Row="0"
-                    Grid.Column="1"
-                    Source="close.png"
-                    WidthRequest="17">
+                    Grid.Column="0"
+                    Source="arrowback.png"
+                    WidthRequest="25"
+                    HeightRequest="30">
                     <Image.GestureRecognizers>
                         <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped_ToClose"/>
                     </Image.GestureRecognizers>
@@ -33,13 +34,17 @@
             </Grid>
         </Border>
         <Label x:Name="LabelError" Margin="30" TextColor="Red" IsVisible="False" />
+        <Entry x:Name="EntryValue" Placeholder="Valor" Margin="100, 0"/>
+        <Entry x:Name="EntryValue2" Placeholder="Valor" Margin="100, 0" FontSize="20" ClearButtonVisibility="WhileEditing" >
+            <Entry.PlaceholderColor>Black</Entry.PlaceholderColor>
+        </Entry>
+
         <Grid ColumnDefinitions="*, *" Margin="30">
             <RadioButton x:Name="RadioIncome" IsChecked="True" Content="Receita" />
             <RadioButton x:Name="RadioExpense" Grid.Column="1" HorizontalOptions="End" Content="Despesa"/>
         </Grid>
         <Entry x:Name="EntryName" Placeholder="Nome" Margin="15, 0"/>
         <DatePicker x:Name="DatePickerDate"  Margin="15, 0"/>
-        <Entry x:Name="EntryValue" Placeholder="Valor" Margin="15, 0"/>
         <Button Clicked="OnButtonClicked_Save" Text="Salvar" Margin="15, 0" HorizontalOptions="Center"/>
     </VerticalStackLayout>
 </ContentPage>
