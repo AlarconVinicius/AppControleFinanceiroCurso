@@ -1,7 +1,8 @@
+using AppControleFinanceiroCurso.Extensions;
 using AppControleFinanceiroCurso.Interfaces;
 using AppControleFinanceiroCurso.Models;
 using CommunityToolkit.Mvvm.Messaging;
-using Microsoft.Maui;
+using System.Globalization;
 
 namespace AppControleFinanceiroCurso.Views;
 
@@ -9,11 +10,15 @@ public partial class TransactionList : ContentPage
 {
     private readonly ITransactionRepositoy _transactionRepositoy;
     private Color _borderDefaultBackgroundColor;
-    private String _labelDefaultText;
+    private string _labelDefaultText;
+    private int Year;
+    private int Month;
     public TransactionList(ITransactionRepositoy transactionRepositoy)
     {
         _transactionRepositoy = transactionRepositoy;
         InitializeComponent();
+        this.Year = DateTime.UtcNow.Year;
+        this.Month = DateTime.UtcNow.Month;
         Reload();
         WeakReferenceMessenger.Default.Register<string>(this, (e, msg) =>
         {
@@ -23,8 +28,11 @@ public partial class TransactionList : ContentPage
 
     private void Reload()
     {
-        var items = _transactionRepositoy.GetAll();
+        GetYearAndMounth();
+        var items = _transactionRepositoy.GetTransactionsByMonthAndYear(this.Month, this.Year);
         CollectionViewTransactions.ItemsSource = items;
+        BorderTransactions.IsVisible = items.Count() != 0 ? true : false;
+        BorderTransactionsEmpty.IsVisible = items.Count() == 0 ? true : false;
         double income = items.Where(a => a.Type == Models.Enums.TransactionType.Income).Sum(a => a.Value);
         double expense = items.Where(a => a.Type == Models.Enums.TransactionType.Expense).Sum(a => a.Value);
         double balance = income - expense;
@@ -39,11 +47,11 @@ public partial class TransactionList : ContentPage
     }
 
     private void OnButtonClicked_To_TransactionAdd(object sender, EventArgs args)
-	{ 
+    {
 
         var transactionAdd = Handler.MauiContext.Services.GetService<TransactionAdd>();
-		Navigation.PushModalAsync(transactionAdd);
-	}
+        Navigation.PushModalAsync(transactionAdd);
+    }
 
     private void TapGestureRecognizer_Tapped_To_TransactionEdit(object sender, TappedEventArgs e)
     {
@@ -60,7 +68,7 @@ public partial class TransactionList : ContentPage
     private async void TapGestureRecognizer_Tapped_ToDelete(object sender, TappedEventArgs e)
     {
         await AnimationBorder((Border)sender, true);
-        bool result = await App.Current.MainPage.DisplayAlert("Excluir!", "Tem certeza que deseja excluir?", "Sim", "NÃ£o");
+        bool result = await App.Current.MainPage.DisplayAlert("Excluir!", "Tem certeza que deseja excluir?", "Sim", "Não");
 
         if (result)
         {
@@ -94,5 +102,36 @@ public partial class TransactionList : ContentPage
             label.Text = _labelDefaultText;
             await border.RotateYTo(0, 250);
         }
+    }
+
+    private void DecreaseMonthClicked(object sender, EventArgs e)
+    {
+        this.Month--;
+        if (this.Month < 1)
+        {
+            this.Month = 12;
+            this.Year--;
+        }
+
+        Reload();
+    }
+
+    private void IncreaseMonthClicked(object sender, EventArgs e)
+    {
+        this.Month++;
+        if (this.Month > 12)
+        {
+            this.Month = 1;
+            this.Year++;
+        }
+
+        Reload();
+    }
+
+    private void GetYearAndMounth()
+    {
+        string monthName = new DateTime(this.Year, this.Month, 1).ToString("MMMM", CultureInfo.GetCultureInfo("pt-BR"));
+        LabelMonthYear.Text = $"{monthName.ToCapitalize()} {this.Year}";
+
     }
 }

@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage 
-    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    x:Class="AppControleFinanceiroCurso.Views.TransactionList"
-    Title="TransactionList"
-    xmlns:converters="clr-namespace:AppControleFinanceiroCurso.Libraries.Converters"
-    NavigationPage.HasNavigationBar="False">
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AppControleFinanceiroCurso.Views.TransactionList"
+             Title="Listagem"
+             xmlns:converters="clr-namespace:AppControleFinanceiroCurso.Libraries.Converters"
+             NavigationPage.HasNavigationBar="False">
     <ContentPage.Resources>
         <ResourceDictionary Source="/Resources/Styles/Colors.xaml"/>
         <ResourceDictionary>
@@ -19,7 +18,26 @@
     <VerticalStackLayout >
         <Border Margin="0, 0, 0, 10" Padding=" 10, 15" BackgroundColor="{StaticResource Primary}" StrokeThickness="0" StrokeShape="RoundRectangle  0, 0, 30, 30">
             <Grid ColumnDefinitions="*, *, *" RowDefinitions="Auto, 0.5, *, *, Auto">
-                <Label Margin="10, 0, 0, 10" Grid.Row="0" Grid.Column="1" Text="Junho 2023" FontSize="18" TextColor="#fff" HorizontalTextAlignment="Center"/>
+                <Button Text="-"
+                        FontSize="17"
+                        TextColor="White"
+                        BackgroundColor="Transparent"
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Clicked="DecreaseMonthClicked" />
+                <Label x:Name="LabelMonthYear"
+                       FontSize="17"
+                       TextColor="White"
+                       HorizontalTextAlignment="Center"
+                       Grid.Row="0"
+                       Grid.Column="1" />
+                <Button Text="+"
+                        FontSize="17"
+                        TextColor="White"
+                        BackgroundColor="Transparent"
+                        Grid.Row="0"
+                        Grid.Column="2"
+                        Clicked="IncreaseMonthClicked" />
                 <Line Grid.Row="1" Grid.ColumnSpan="3" BackgroundColor="#D9D9D9"/>
                 <Label Margin="0, 10, 0, 0" Grid.Row="2" Grid.Column="0" Text="Entrada" FontSize="14" TextColor="#fff" HorizontalTextAlignment="Center"/>
                 <Label Margin="0, 4, 0, 0" Grid.Row="2" Grid.Column="1" Text="Saldo" FontSize="16" TextColor="#fff" HorizontalTextAlignment="Center"/>
@@ -44,20 +62,20 @@
                         </Grid.RowDefinitions>
 
                         <Frame
-                                    BackgroundColor="{StaticResource Secondary}"
-                                    BorderColor="Transparent"
-                                    CornerRadius="100"
-                                    WidthRequest="40"
-                                    HeightRequest="40"
-                                    Grid.RowSpan="2"
-                                    Grid.Column="0"
-                                    Padding="0"
-                                    Margin="5, 0, 5, 0">
+                                        BackgroundColor="{StaticResource Secondary}"
+                                        BorderColor="Transparent"
+                                        CornerRadius="100"
+                                        WidthRequest="40"
+                                        HeightRequest="40"
+                                        Grid.RowSpan="2"
+                                        Grid.Column="0"
+                                        Padding="0"
+                                        Margin="5, 0, 5, 0">
                             <Image
-                                    Source="check.png"
-                                    Aspect="Center"
-                                    HorizontalOptions="Center"
-                                    VerticalOptions="Center">
+                                        Source="check.png"
+                                        Aspect="Center"
+                                        HorizontalOptions="Center"
+                                        VerticalOptions="Center">
                             </Image>
                         </Frame>
                         <Label Margin="5, 0, 5, 0" Text="Pago" Grid.Row="0" Grid.Column="1" FontSize="14" TextColor="#fff" HorizontalTextAlignment="Start"/>
@@ -74,20 +92,20 @@
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                         <Frame
-                                    BackgroundColor="{StaticResource Secondary}"
-                                    BorderColor="Transparent"
-                                    CornerRadius="100"
-                                    WidthRequest="40"
-                                    HeightRequest="40"
-                                    Grid.RowSpan="2"
-                                    Grid.Column="0"
-                                    Padding="0"
-                                    Margin="5, 0, 5, 0">
+                                        BackgroundColor="{StaticResource Secondary}"
+                                        BorderColor="Transparent"
+                                        CornerRadius="100"
+                                        WidthRequest="40"
+                                        HeightRequest="40"
+                                        Grid.RowSpan="2"
+                                        Grid.Column="0"
+                                        Padding="0"
+                                        Margin="5, 0, 5, 0">
                             <Image
-                                        Source="closeblack.png"
-                                        Aspect="Center"
-                                        HorizontalOptions="Center"
-                                        VerticalOptions="Center">
+                                            Source="closeblack.png"
+                                            Aspect="Center"
+                                            HorizontalOptions="Center"
+                                            VerticalOptions="Center">
                             </Image>
                         </Frame>
                         <Label Margin="5, 0, 5, 0" Text="A pagar" Grid.Row="0" Grid.Column="1" FontSize="14" TextColor="#fff" HorizontalTextAlignment="Start"/>
@@ -96,61 +114,78 @@
                 </Grid>
             </Grid>
         </Border>
-        <Border Margin="10, 0" Padding="0, 10" BackgroundColor="{StaticResource White}" StrokeThickness="0" StrokeShape="RoundRectangle  13">
-            <CollectionView x:Name="CollectionViewTransactions">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <Grid Padding="10" ColumnDefinitions="50, *, Auto, 20">
-                            <Grid.GestureRecognizers>
-                                <TapGestureRecognizer CommandParameter="{Binding .}" Tapped="TapGestureRecognizer_Tapped_To_TransactionEdit"/>
-                            </Grid.GestureRecognizers>
-                            <Border 
-                                        WidthRequest="40" 
-                                        HeightRequest="40" 
-                                        BackgroundColor="{Binding Name, Converter={StaticResource TransactionNameColorConverter}}"
-                                        StrokeShape="RoundRectangle 20"
-                                        Stroke="Transparent">
-                                <Border.GestureRecognizers>
-                                    <TapGestureRecognizer CommandParameter="{Binding .}" Tapped="TapGestureRecognizer_Tapped_ToDelete"/>
-                                </Border.GestureRecognizers>
-                                <Label 
-                                            Text="{Binding Name, Converter={StaticResource TransactionNameConverter}}"
-                                            VerticalTextAlignment="Center"
-                                            HorizontalTextAlignment="Center"
-                                            FontSize="20"/>
-                            </Border>
-                            <VerticalStackLayout Grid.Column="1">
-                                <Label Text="{Binding Name}"/>
-                                <Label Text="{Binding Date, StringFormat='{0:dd/MM/yyyy}'}" TextColor="#BABABA"/>
-                            </VerticalStackLayout>
-
-                            <Label Grid.Column="2" Text="{Binding ., Converter={StaticResource TransactionValueConverter}}" TextColor="{Binding ., Converter={StaticResource TransactionValueColorConverter}}" VerticalOptions="Center"/>
-                            <Ellipse Grid.Column="3" HorizontalOptions="Center" VerticalOptions="Center" WidthRequest="10" HeightRequest="10" Fill="{Binding ., Converter={StaticResource TransactionPaymentColorConverter}}"/>
-                        </Grid>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
+        <Border x:Name="BorderTransactionsEmpty" Margin ="10, 0" Padding="30" BackgroundColor="{StaticResource White}" StrokeThickness="0" StrokeShape="RoundRectangle  13">
+            <Label x:Name="NoTransactionsLabel"
+                                       Text="Nenhuma transação"
+                                       TextColor="#A9A9A9"
+                                       FontSize="18"
+                                       HorizontalOptions="Center"
+                                       VerticalOptions="Center"/>
         </Border>
+        <ScrollView x:Name="BorderTransactions">
+            <StackLayout>
+                <Frame Margin="10"
+                            Padding="0, 10"
+                            BackgroundColor="{StaticResource White}"
+                            BorderColor="Transparent"
+                            HasShadow="False"
+                            CornerRadius="13"
+                            MaximumHeightRequest="500">
+                    <CollectionView x:Name="CollectionViewTransactions">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Padding="10" ColumnDefinitions="50, *, Auto, 20">
+                                    <Grid.GestureRecognizers>
+                                        <TapGestureRecognizer CommandParameter="{Binding .}" Tapped="TapGestureRecognizer_Tapped_To_TransactionEdit"/>
+                                    </Grid.GestureRecognizers>
+                                    <Border 
+                                            WidthRequest="40" 
+                                            HeightRequest="40" 
+                                            BackgroundColor="{Binding Name, Converter={StaticResource TransactionNameColorConverter}}"
+                                            StrokeShape="RoundRectangle 20"
+                                            Stroke="Transparent">
+                                        <Border.GestureRecognizers>
+                                            <TapGestureRecognizer CommandParameter="{Binding .}" Tapped="TapGestureRecognizer_Tapped_ToDelete"/>
+                                        </Border.GestureRecognizers>
+                                        <Label 
+                                                Text="{Binding Name, Converter={StaticResource TransactionNameConverter}}"
+                                                VerticalTextAlignment="Center"
+                                                HorizontalTextAlignment="Center"
+                                                FontSize="20"/>
+                                    </Border>
+                                    <VerticalStackLayout Grid.Column="1">
+                                        <Label Text="{Binding Name}"/>
+                                        <Label Text="{Binding Date, StringFormat='{0:dd/MM/yyyy}'}" TextColor="#BABABA"/>
+                                    </VerticalStackLayout>
+
+                                    <Label Grid.Column="2" Text="{Binding ., Converter={StaticResource TransactionValueConverter}}" TextColor="{Binding ., Converter={StaticResource TransactionValueColorConverter}}" VerticalOptions="Center"/>
+                                    <Ellipse Grid.Column="3" HorizontalOptions="Center" VerticalOptions="Center" WidthRequest="10" HeightRequest="10" Fill="{Binding ., Converter={StaticResource TransactionPaymentColorConverter}}"/>
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </Frame>
+            </StackLayout>
+        </ScrollView>
         <Frame
-                BackgroundColor="{StaticResource Secondary}"
-                BorderColor="Transparent"
-                CornerRadius="100"
-                WidthRequest="40"
-                HeightRequest="40"
-                Grid.RowSpan="2"
-                Grid.Column="0"
-                Padding="0"
-                Margin="5, 10, 5, 0">
+                    BackgroundColor="{StaticResource Secondary}"
+                    BorderColor="Transparent"
+                    CornerRadius="100"
+                    WidthRequest="40"
+                    HeightRequest="40"
+                    Grid.RowSpan="2"
+                    Grid.Column="0"
+                    Padding="0"
+                    Margin="5, 10, 5, 0">
             <Image
-                    Source="add.png"
-                    Aspect="Center"
-                    HorizontalOptions="Center"
-                    VerticalOptions="Center">
+                        Source="add.png"
+                        Aspect="Center"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center">
                 <Image.GestureRecognizers>
                     <TapGestureRecognizer Tapped="OnButtonClicked_To_TransactionAdd"/>
                 </Image.GestureRecognizers>
             </Image>
         </Frame>
     </VerticalStackLayout>
-
 </ContentPage>
