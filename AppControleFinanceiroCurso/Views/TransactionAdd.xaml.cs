@@ -40,7 +40,7 @@ public partial class TransactionAdd : ContentPage
         {
             Type = RadioIncome.IsChecked ? TransactionType.Income : TransactionType.Expense,
             Name = EntryName.Text,
-            Date = DatePickerDate.Date,
+            Date = DatePickerDate.Date.Add(DateTime.Now.TimeOfDay),
             Value = double.Parse(EntryValue.Text),
             Paid = CheckBoxPaid.IsChecked ? true : false,
             Repete = CheckBoxRepete.IsChecked ? true : false,
