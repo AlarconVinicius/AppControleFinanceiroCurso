@@ -30,8 +30,6 @@ public partial class TransactionAdd : ContentPage
         SaveTransactionInDatabase();
         Navigation.PopModalAsync();
         WeakReferenceMessenger.Default.Send<string>(string.Empty);
-        var count = _repository.GetAll().Count;
-        App.Current.MainPage.DisplayAlert("Mensagem!", $"Existem {count} registro(s) no banco!", "OK");
     }
 
     private void SaveTransactionInDatabase()
@@ -41,7 +39,7 @@ public partial class TransactionAdd : ContentPage
             Type = RadioIncome.IsChecked ? TransactionType.Income : TransactionType.Expense,
             Name = EntryName.Text,
             Date = DatePickerDate.Date.Add(DateTime.Now.TimeOfDay),
-            Value = double.Parse(EntryValue.Text),
+            Value = Math.Abs(double.Parse(EntryValue.Text)),
             Paid = CheckBoxPaid.IsChecked ? true : false,
             Repete = CheckBoxRepete.IsChecked ? true : false,
             QtdRepete = this.qtdRepete
